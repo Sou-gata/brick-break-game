@@ -50,13 +50,11 @@ body {
 #youlose {
     width: 400px;
     position: absolute;
-    top: 150px;
-    left: 0px;
     display: none;
 }
 #restart {
     position: absolute;
-    top: 310px;
+    top: 70%;
     left: 50%;
     transform: translateX(-50%);
     display: flex;
@@ -138,4 +136,14 @@ body {
     border: 2px solid black;
     background: white;
     font-size: 20px;
+    z-index: 2;
+}
+.bg{
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: #1b1b1b86;
+    width: 100vw;
+    height: 100vh;
+    z-index: 1;
 }

@@ -1,4 +1,5 @@
 const buttons = document.querySelector(".buttons");
+const bg = document.querySelector(".bg");
 const canvas = document.querySelector("#canvas");
 const ctx = canvas.getContext("2d");
 let phone = false;
@@ -9,6 +10,8 @@ if (innerHeight > innerWidth) {
     h = (innerWidth * 5) / 4;
     buttons.style.display = "flex";
     phone = true;
+} else {
+    bg.style.display = "none";
 }
 canvas.height = h;
 canvas.width = w;
@@ -40,12 +43,17 @@ class Paddle {
         this.dx = speed;
     }
     drawPaddle() {
-        ctx.fillStyle = "#2e3548";
-        ctx.strokeStyle = "#ffcd05";
-        ctx.beginPath();
-        ctx.rect(this.x, this.y, this.width, this.height);
-        ctx.fill();
-        ctx.stroke();
+        ctx.drawImage(
+            PADDLE_IMG,
+            0,
+            0,
+            PADDLE_IMG.width,
+            PADDLE_IMG.height,
+            this.x,
+            this.y,
+            this.width,
+            this.height
+        );
     }
     movePaddle() {
         if (rightArrow) {
@@ -71,12 +79,17 @@ class Ball {
         this.dy = -3;
     }
     drawBall() {
-        ctx.fillStyle = "#ffcd05";
-        ctx.strokeStyle = "#2e3548";
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.radious, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.stroke();
+        ctx.drawImage(
+            BALL_IMG,
+            0,
+            0,
+            BALL_IMG.width,
+            BALL_IMG.height,
+            this.x - this.radious,
+            this.y - this.radious,
+            this.radious * 2,
+            this.radious * 2
+        );
     }
     moveBall() {
         this.x += this.dx;
@@ -88,7 +101,7 @@ class Ball {
     ballWallCollision() {
         if (this.x + this.radious > canvas.width || this.x - this.radious < 0) {
             this.dx = -this.dx;
-            WALL_HIT.play();
+            if (gameStart) WALL_HIT.play();
         }
 
         if (this.y - this.radious < 0) {
@@ -96,7 +109,7 @@ class Ball {
             WALL_HIT.play();
         }
 
-        if (this.y + this.radious > canvas.height) {
+        if (this.y + this.radious > paddle.y + paddle.height) {
             life--;
             LIFE_LOST.play();
             this.resetBall();
@@ -137,8 +150,6 @@ class Brick {
                 this.width * this.column -
                 (this.column - 1) * this.offSet) /
             2;
-        this.fillColor = "#2e3548";
-        this.strokeColor = "#FFF";
         this.bricks = [];
     }
     createBricks() {
@@ -158,11 +169,17 @@ class Brick {
             for (let c = 0; c < this.column; c++) {
                 let b = this.bricks[r][c];
                 if (b.status) {
-                    ctx.fillStyle = this.fillColor;
-                    ctx.strokeStyle = this.strokeColor;
-                    ctx.rect(b.x, b.y, this.width, this.height);
-                    ctx.fill();
-                    ctx.stroke();
+                    ctx.drawImage(
+                        BRICK_IMG,
+                        0,
+                        0,
+                        BRICK_IMG.width,
+                        BRICK_IMG.height,
+                        b.x,
+                        b.y,
+                        this.width,
+                        this.height
+                    );
                 }
             }
         }
@@ -229,32 +246,6 @@ function levelUp() {
     }
 }
 
-window.addEventListener("keydown", (e) => {
-    console.log(e.code);
-    if (e.code == "ArrowLeft") {
-        leftArrow = true;
-    } else if (e.code == "ArrowRight") {
-        rightArrow = true;
-    }
-    if (e.code == "Space" && !gameStart) {
-        gameStart = true;
-        gamePause = false;
-    }
-    if (e.code == "KeyP") {
-        if (!gamePause) gamePause = true;
-    }
-    if (e.code == "KeyS") {
-        if (gamePause) gamePause = false;
-    }
-});
-window.addEventListener("keyup", (e) => {
-    if (e.code == "ArrowLeft") {
-        leftArrow = false;
-    } else if (e.code == "ArrowRight") {
-        rightArrow = false;
-    }
-});
-
 let paddle = new Paddle();
 let ball = new Ball();
 let brick = new Brick();
@@ -302,19 +293,6 @@ function animate() {
 animate();
 
 const soundElement = document.getElementById("sound");
-soundElement.addEventListener("click", audioManager);
-
-function audioManager() {
-    let imgSrc = soundElement.getAttribute("src");
-    let SOUND_IMG =
-        imgSrc == "img/SOUND_ON.png" ? "img/SOUND_OFF.png" : "img/SOUND_ON.png";
-    soundElement.setAttribute("src", SOUND_IMG);
-    WALL_HIT.muted = WALL_HIT.muted ? false : true;
-    PADDLE_HIT.muted = PADDLE_HIT.muted ? false : true;
-    BRICK_HIT.muted = BRICK_HIT.muted ? false : true;
-    WIN.muted = WIN.muted ? false : true;
-    LIFE_LOST.muted = LIFE_LOST.muted ? false : true;
-}
 
 const gameover = document.getElementById("gameover");
 const youwin = document.getElementById("youwin");
@@ -325,44 +303,6 @@ const restart = document.getElementById("restart");
 const left = document.querySelector(".left");
 const right = document.querySelector(".right");
 const start = document.querySelector(".start");
-
-left.addEventListener("mousedown", () => {
-    leftArrow = true;
-});
-left.addEventListener("mouseup", () => {
-    leftArrow = false;
-});
-left.addEventListener("touchstart", () => {
-    leftArrow = true;
-});
-left.addEventListener("touchend", () => {
-    leftArrow = false;
-});
-right.addEventListener("mousedown", () => {
-    rightArrow = true;
-});
-right.addEventListener("mouseup", () => {
-    rightArrow = false;
-});
-right.addEventListener("touchstart", () => {
-    rightArrow = true;
-});
-right.addEventListener("touchend", () => {
-    rightArrow = false;
-});
-
-restart.addEventListener("click", () => {
-    location.reload();
-});
-restart.addEventListener("touchend", () => {
-    location.reload();
-});
-
-start.addEventListener("click", () => {
-    gameStart = true;
-    gamePause = false;
-    start.style.display = "none";
-});
 
 if (innerHeight < innerWidth) {
     inst.style.display = "flex";

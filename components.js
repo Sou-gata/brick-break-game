@@ -10,6 +10,15 @@ LIFE_IMG.src = "img/life.png";
 const SCORE_IMG = new Image();
 SCORE_IMG.src = "img/score.png";
 
+const PADDLE_IMG = new Image();
+PADDLE_IMG.src = "img/paddle.png";
+
+const BRICK_IMG = new Image();
+BRICK_IMG.src = "img/bricks.png";
+
+const BALL_IMG = new Image();
+BALL_IMG.src = "img/ball.png";
+
 const WALL_HIT = new Audio();
 WALL_HIT.src = "sounds/wall.mp3";
 

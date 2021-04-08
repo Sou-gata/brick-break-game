@@ -1,8 +1,17 @@
+const buttons = document.querySelector(".buttons");
 const canvas = document.querySelector("#canvas");
 const ctx = canvas.getContext("2d");
-canvas.height = innerHeight;
-canvas.width = (canvas.height * 4) / 5;
-console.log(canvas.width);
+let phone = false;
+let h = innerHeight;
+let w = (innerHeight * 4) / 5;
+if (innerHeight > innerWidth) {
+    w = innerWidth;
+    h = (innerWidth * 5) / 4;
+    buttons.style.display = "flex";
+    phone = true;
+}
+canvas.height = h;
+canvas.width = w;
 
 const paddleWidth = 100;
 const paddleMargin = 50;
@@ -10,7 +19,7 @@ const paddleHeight = 20;
 const ballRadious = 8;
 const speed = 5;
 
-let life = 1;
+let life = 3;
 let score = 0;
 const scoreUnit = 10;
 let level = 1;
@@ -18,6 +27,7 @@ const maxLevel = 3;
 
 let gameStart = false;
 let GameOver = false;
+let gamePause = false;
 let leftArrow = false;
 let rightArrow = false;
 
@@ -93,7 +103,7 @@ class Ball {
         }
     }
     resetBall() {
-        this.x = canvas.width / 2;
+        this.x = paddle.x + paddle.width / 2;
         this.y = paddle.y - this.radious;
         this.dx = 3 * (Math.random() * 2 - 1);
         this.dy = -3;
@@ -228,6 +238,13 @@ window.addEventListener("keydown", (e) => {
     }
     if (e.code == "Space" && !gameStart) {
         gameStart = true;
+        gamePause = false;
+    }
+    if (e.code == "KeyP") {
+        if (!gamePause) gamePause = true;
+    }
+    if (e.code == "KeyS") {
+        if (gamePause) gamePause = false;
     }
 });
 window.addEventListener("keyup", (e) => {
@@ -271,9 +288,9 @@ function animate() {
         5
     );
 
-    paddle.movePaddle();
+    if (!gamePause) paddle.movePaddle();
     if (!gameStart) ball.ballPosition();
-    if (gameStart) ball.moveBall();
+    if (gameStart && !gamePause) ball.moveBall();
     ball.ballWallCollision();
     ball.ballPaddleCollision();
     brick.ballBrickCollision();
@@ -302,7 +319,62 @@ function audioManager() {
 const gameover = document.getElementById("gameover");
 const youwin = document.getElementById("youwin");
 const youlose = document.getElementById("youlose");
+const inst = document.querySelector(".instructions");
 const restart = document.getElementById("restart");
-restart.addEventListener("click", function () {
+
+const left = document.querySelector(".left");
+const right = document.querySelector(".right");
+const start = document.querySelector(".start");
+
+left.addEventListener("mousedown", () => {
+    leftArrow = true;
+});
+left.addEventListener("mouseup", () => {
+    leftArrow = false;
+});
+left.addEventListener("touchstart", () => {
+    leftArrow = true;
+});
+left.addEventListener("touchend", () => {
+    leftArrow = false;
+});
+right.addEventListener("mousedown", () => {
+    rightArrow = true;
+});
+right.addEventListener("mouseup", () => {
+    rightArrow = false;
+});
+right.addEventListener("touchstart", () => {
+    rightArrow = true;
+});
+right.addEventListener("touchend", () => {
+    rightArrow = false;
+});
+
+restart.addEventListener("click", () => {
     location.reload();
 });
+restart.addEventListener("touchend", () => {
+    location.reload();
+});
+
+start.addEventListener("click", () => {
+    gameStart = true;
+    gamePause = false;
+    start.style.display = "none";
+});
+
+if (innerHeight < innerWidth) {
+    inst.style.display = "flex";
+    start.style.display = "none";
+    start.style.pointerEvents = "none";
+}
+
+if (!phone) {
+    window.addEventListener("load", () => {
+        setTimeout(() => {
+            inst.style.display = "none";
+            inst.style.pointerEvents = "none";
+        }, 2500);
+    });
+}

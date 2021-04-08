@@ -7,15 +7,26 @@
         <title>Break Break</title>
     </head>
     <body>
-        <div class="sound">
-            <img src="img/SOUND_ON.png" alt="" id="sound" />
-        </div>
         <div id="gameover">
             <img src="img/youwon.png" alt="" id="youwon" />
             <img src="img/gameover.png" alt="" id="youlose" />
             <div id="restart"><button>Play Again!</button></div>
         </div>
-        <canvas id="canvas"></canvas>
+        <div class="instructions">
+            <h1>Instructions</h1>
+            <h1 class="ins">Space - to start</h1>
+            <h1 class="ins">P - to pause</h1>
+            <h1 class="ins">S - to resume</h1>
+        </div>
+        <div id="game">
+            <canvas id="canvas"></canvas>
+            <img src="img/SOUND_ON.png" alt="" id="sound" />
+        </div>
+        <div class="buttons">
+            <button class="left"></button>
+            <button class="right"></button>
+        </div>
+        <button class="start">Start</button>
         <link rel="stylesheet" href="style.css" />
         <script src="components.js"></script>
         <script src="script.js"></script>

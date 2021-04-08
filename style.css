@@ -5,23 +5,28 @@
     font-family: sans-serif;
 }
 body {
-    background: #000;
+    background: #252525;
+}
+
+#game {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    width: 100vw;
+    position: relative;
 }
 #canvas {
     background: #616161;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: -999;
+    z-index: -2;
 }
 #sound {
     width: 30px;
     height: 30px;
     cursor: pointer;
     position: absolute;
-    top: 465px;
-    left: 15px;
+    bottom: 2vh;
+    z-index: 2;
 }
 #gameover {
     position: absolute;
@@ -30,6 +35,7 @@ body {
     background: rgba(0, 0, 0, 0.75);
     top: 50%;
     left: 50%;
+    z-index: 1;
     transform: translate(-50%, -50%);
     border-radius: 25px;
     display: none;
@@ -37,14 +43,14 @@ body {
 #youwon {
     width: 100px;
     position: absolute;
-    top: 200px;
+    top: 150px;
     left: 150px;
     display: none;
 }
 #youlose {
     width: 400px;
     position: absolute;
-    top: 100px;
+    top: 150px;
     left: 0px;
     display: none;
 }
@@ -73,4 +79,63 @@ body {
     border: 2px solid red;
     background: #00ccff;
     color: black;
+}
+.instructions {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: none;
+    justify-content: space-around;
+    align-items: center;
+    flex-direction: column;
+    color: white;
+    width: 400px;
+    height: 500px;
+    background: rgba(0, 0, 0, 0.75);
+    border-radius: 25px;
+}
+.ins {
+    font-size: 25px;
+    font-weight: 500;
+}
+.buttons {
+    position: absolute;
+    padding: 5vw;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100vw;
+    height: 100vvh;
+    display: none;
+    align-items: center;
+    justify-content: space-between;
+}
+.left,
+.right {
+    width: 40px;
+    height: 40px;
+    background: url(./img/left-arrow.png);
+    background-size: cover;
+    outline: none;
+    border: 2px solid white;
+    border-radius: 50%;
+    z-index: -1;
+}
+.right {
+    background: url(./img/right-arrow.png);
+    background-size: cover;
+}
+.start {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100px;
+    height: 33px;
+    border-radius: 33px;
+    outline: none;
+    border: 2px solid black;
+    background: white;
+    font-size: 20px;
 }

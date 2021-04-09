@@ -103,7 +103,12 @@ class Ball {
             this.dx = -this.dx;
             if (gameStart) WALL_HIT.play();
         }
-
+        if (this.x + this.radious > canvas.width + 2) {
+            this.x = canvas.width - this.radious;
+        }
+        if (this.x - this.radious < -2) {
+            this.x = 0 + this.radious;
+        }
         if (this.y - this.radious < 0) {
             this.dy = -this.dy;
             WALL_HIT.play();
